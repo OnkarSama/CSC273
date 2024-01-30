@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=OrderedPair
+comment0.text=\r\n\ OrderdPair.java\r\n\ \r\n\ Class\ representing\ an\ ordered\ pair\ of\ unspecified\ objects\r\n
+comment1.params=firstItem\ secondItem
+comment1.target=OrderedPair(java.lang.Object,\ java.lang.Object)
+comment2.params=
+comment2.target=java.lang.Object\ getFirst()
+comment3.params=
+comment3.target=java.lang.Object\ getSecond()
+comment4.params=
+comment4.target=void\ changeOrder()
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6

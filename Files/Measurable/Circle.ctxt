@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Circle
+comment0.text=\r\n\ Implementation\ of\ a\ measurable\ circle\r\n
+comment1.params=r
+comment1.target=Circle(double)
+comment2.params=
+comment2.target=Circle()
+comment3.params=
+comment3.target=double\ getArea()
+comment4.params=
+comment4.target=double\ getPerimeter()
+numComments=5

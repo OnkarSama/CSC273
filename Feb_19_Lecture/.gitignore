@@ -100,4 +100,5 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Store.idea/
+./Feb_19_Lecture.iml

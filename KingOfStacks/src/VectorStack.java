@@ -1,13 +1,12 @@
 
 /**
  * VectorStack.java - Vector-based implementation of our Stack ADT
- *
  */
+
 import java.util.EmptyStackException;
 import java.util.Vector;
 
-public class VectorStack<T> implements StackInterface<T>
-{
+public class VectorStack<T> implements StackInterface<T> {
     //declare our properties
     private Vector<T> stack;              //the array holding our entries
     private final static int DEFAULT_CAPACITY = 25;
@@ -17,20 +16,17 @@ public class VectorStack<T> implements StackInterface<T>
     //define our constructors
 
     //default constructor
-    public VectorStack()
-    {
+    public VectorStack() {
         this(DEFAULT_CAPACITY);
     }
 
     //parameterized constructor
-    public VectorStack(int capacity)
-    {
+    public VectorStack(int capacity) {
         integrityOK = false;
 
-        if (capacity <= 0)
-        {
+        if(capacity <= 0) {
             stack = new Vector<T>(DEFAULT_CAPACITY);   // capacity too small, use default value
-        } else  {
+        } else {
             checkCapacity(capacity);
             stack = new Vector<T>(capacity);   // capacity is good
         }
@@ -39,23 +35,20 @@ public class VectorStack<T> implements StackInterface<T>
     }
 
     //checkIntegrity() - helper method to ensure bag is okay to work with
-    private void checkIntegrity()
-    {
-        if (!integrityOK)
+    private void checkIntegrity() {
+        if(!integrityOK)
             throw new SecurityException("Data is corrupt.");
     }
 
     //checkCapacity() - ensure desired capacity is allowed; else throw exception
-    private void checkCapacity(int capacity)
-    {
-        if (capacity > MAX_CAPACITY)
+    private void checkCapacity(int capacity) {
+        if(capacity > MAX_CAPACITY)
             throw new IllegalStateException("Attempted to create a bag that exceeds max capacity.");
     }
 
     //push() - adds a new entry to the top of this stack
     //   @param newEntry - the object to be added to the stack
-    public void push(T newEntry)
-    {
+    public void push(T newEntry) {
         checkIntegrity();
         integrityOK = false;
         stack.add(newEntry);
@@ -65,13 +58,11 @@ public class VectorStack<T> implements StackInterface<T>
     //pop() - removes and returns the entry at the top of this stack
     //   @return the object at the top of the stack
     //   @throws EmptyStackException if stack is empty before the operation
-    public T pop()
-    {
+    public T pop() {
         checkIntegrity();
-        if (isEmpty())
+        if(isEmpty())
             throw new EmptyStackException();
-        else
-        {
+        else {
             integrityOK = false;
             T topData = stack.remove(stack.size() - 1);
             integrityOK = true;
@@ -82,10 +73,9 @@ public class VectorStack<T> implements StackInterface<T>
     //peek() - returns the entry at the top of this stack
     //   @return the object at the top of the stack
     //   @throws EmptyStackException if stack is empty before the operation
-    public T peek()
-    {
+    public T peek() {
         checkIntegrity();
-        if (isEmpty())
+        if(isEmpty())
             throw new EmptyStackException();
         else
             return stack.lastElement();
@@ -93,14 +83,12 @@ public class VectorStack<T> implements StackInterface<T>
 
     //isEmpty() - checks if Stack is empty
     //   @return TRUE if empty; FALSE otherwise
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return stack.isEmpty();
     }
 
     //clear() - removes all entries from the stack
-    public void clear()
-    {
+    public void clear() {
         stack.clear();
     }
 }

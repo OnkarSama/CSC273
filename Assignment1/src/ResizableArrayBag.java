@@ -1,8 +1,11 @@
 
 /**
- * ArrayBag.java - array-based implementation of the Bag ADT
+ * ResizableArrayBag.java - array-based implementation of the Bag ADT that can be resized
  */
-public class ArrayBag<T> implements BagInterface<T> {
+import java.util.Arrays;
+
+public class ResizableArrayBag<T> implements BagInterface<T>
+{
     //declare our properties
     private T[] bag;            //the array holding our entries
     private int numEntries;     //how many entries currently in our Bag
@@ -13,20 +16,22 @@ public class ArrayBag<T> implements BagInterface<T> {
     //define our constructors
 
     //default constructor
-    public ArrayBag() {
+    public ResizableArrayBag()
+    {
         this(DEFAULT_CAPACITY);
     }
 
     //parameterized constructor
-    public ArrayBag(int capacity) {
+    public ResizableArrayBag(int capacity)
+    {
         integrityOK = false;
 
-        if (capacity <= 0) {
+        if (capacity <= 0)
+        {
             bag = (T[]) new Object[DEFAULT_CAPACITY];   // capacity too small, use default value
-        } else if (capacity <= MAX_CAPACITY) {  // capacity is good
-            bag = (T[]) new Object[capacity];
-        } else {
-            throw new IllegalStateException("Attempted to create a bag that exceeds max capacity.");
+        } else  {
+            checkCapacity(capacity);
+            bag = (T[]) new Object[capacity];   // capacity is good
         }
 
         numEntries = 0;
@@ -34,27 +39,48 @@ public class ArrayBag<T> implements BagInterface<T> {
     }
 
     //checkIntegrity() - helper method to ensure bag is okay to work with
-    private void checkIntegrity() {
+    private void checkIntegrity()
+    {
         if (!integrityOK)
             throw new SecurityException("Data is corrupt.");
     }
 
     //isArrayFull() - helper method for add
-    private boolean isArrayFull() {
+    private boolean isArrayFull()
+    {
         return (numEntries >= bag.length);
     }
 
     //define our interface methods
 
-    // Adds a new entry to this bag
+    //checkCapacity() - ensure desired capacity is allowed; else throw exception
+    private void checkCapacity(int capacity)
+    {
+        if (capacity > MAX_CAPACITY)
+            throw new IllegalStateException("Attempted to create a bag that exceeds max capacity.");
+    }
+
+    //doubleCapacity() -- helper method to double capacity of array (if allowed)
+    private void doubleCapacity()
+    {
+        int newCapacity = bag.length * 2;
+
+        checkCapacity(newCapacity);
+
+        //copy contents into new array using copyOf
+        bag = Arrays.copyOf(bag, newCapacity);
+    }
+
+    //Adds a new entry to this bag
     // @param newEntry - the object to be added as a new entry
     // @return TRUE if add was successful, FALSE otherwise
-    public boolean add(T newEntry) {
+    public boolean add(T newEntry)
+    {
         checkIntegrity();
 
-        //check if full, can't add, so return false
+        //check if full, can't add, so double capacity
         if (isArrayFull())
-            return false;
+            doubleCapacity();
 
         integrityOK = false;
 
@@ -71,7 +97,8 @@ public class ArrayBag<T> implements BagInterface<T> {
     //Retrieves all entries that are in this bag
     // @return A newly allocated array of all the entries in this bag
     //  NOTE:  If the bag is empty, the returned array is empty
-    public T[] toArray() {
+    public T[] toArray()
+    {
         checkIntegrity();
 
         //create a new array of size numEntries
@@ -86,25 +113,29 @@ public class ArrayBag<T> implements BagInterface<T> {
 
     //Gets the current number of entries in this bag
     // @return The integer number of entries currently in the bag
-    public int getCurrentSize() {
+    public int getCurrentSize()
+    {
         return numEntries;
     }
 
     //Sees whether the bag is empty
     // @return TRUE if the bag is empty, FALSE otherwise
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return (numEntries == 0);
     }
 
     //getIndexOf() - helper method, returns the index of first instance of given entry
     //  @param anEntry - the entry to look for
     //  @return index of entry if found, -1 if not found
-    private int getIndexOf(T anEntry) {
+    private int getIndexOf(T anEntry)
+    {
         boolean found = false;      //early termination flag
         int i = 0;
         int result = -1;
 
-        while (!found && i < numEntries) {
+        while(!found && i < numEntries)
+        {
             if (bag[i].equals(anEntry))     //We found it
             {
                 found = true;               //set termination flag
@@ -120,7 +151,8 @@ public class ArrayBag<T> implements BagInterface<T> {
     //  PRE-CONDITION:  index < numEntries
     //  @param index - the index of the element to be removed
     //  @return the element that was removed from the index, or NULL if no removal
-    private T removeEntry(int index) {
+    private T removeEntry(int index)
+    {
         if (index < 0)
             return null;
 
@@ -147,7 +179,8 @@ public class ArrayBag<T> implements BagInterface<T> {
     //Remove (general, unspecified version) an item
     //Removes one unspecified entry from this bag, if possible
     // @return either the removed entry (if successful), or NULL
-    public T remove() {
+    public T remove()
+    {
         checkIntegrity();
 
         return removeEntry(numEntries - 1);
@@ -157,7 +190,8 @@ public class ArrayBag<T> implements BagInterface<T> {
     //Removes one occurrence of a given entry from the bag, if possible
     // @param anEntry - the entry to be removed
     // @return TRUE if successful, FALSE otherwise
-    public boolean remove(T anEntry) {
+    public boolean remove(T anEntry)
+    {
         checkIntegrity();
 
         int index = getIndexOf(anEntry);    //find index where anEntry is found
@@ -170,8 +204,9 @@ public class ArrayBag<T> implements BagInterface<T> {
     }
 
     //Removes all entries from this bag
-    public void clear() {
-        while (!isEmpty())
+    public void clear()
+    {
+        while(!isEmpty())
             remove();
 
     }
@@ -179,11 +214,13 @@ public class ArrayBag<T> implements BagInterface<T> {
     //Counts the number of times a given entry appears in this bag
     // @param anEntry - the entry to be counted
     // @return the number of times anEntry appears in the bag
-    public int getFrequencyOf(T anEntry) {
+    public int getFrequencyOf(T anEntry)
+    {
         int i = 0;
         int result = 0;
 
-        while (i < numEntries) {
+        while(i < numEntries)
+        {
             if (bag[i].equals(anEntry))     //We found it
             {
                 result++;                   //add 1 to our count
@@ -197,12 +234,13 @@ public class ArrayBag<T> implements BagInterface<T> {
     //Tests whether this bag contains a given entry
     // @param anEntry - the entry to find
     // @return TRUE if the bag contains anEntry, FALSE otherwise
-    public boolean contains(T anEntry) {
+    public boolean contains(T anEntry)
+    {
         //option 1:
-        // return (getFrequencyOf(anEntry) > 0);
+        return (getFrequencyOf(anEntry) > 0);
 
         //option 2:
-        return (getIndexOf(anEntry) != -1);
+        //return (getIndexOf(anEntry) != -1);
     }
 
 
